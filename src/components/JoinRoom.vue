@@ -26,6 +26,8 @@
 import axios from 'axios'
 import * as io from 'socket.io-client'
 
+axios.defaults.withCredentials = true;
+
 export default {
   name: 'JoinRoom',
   data () {

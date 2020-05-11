@@ -53,6 +53,8 @@ import * as io from 'socket.io-client'
 import VueChatScroll from 'vue-chat-scroll'
 Vue.use(VueChatScroll)
 
+axios.defaults.withCredentials = true;
+
 export default {
   name: 'ChatRoom',
   data () {

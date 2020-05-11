@@ -6,6 +6,7 @@ let path = require('path');
 let favicon = require('serve-favicon');
 let logger = require('morgan');
 let bodyParser = require('body-parser');
+let FileStore = require('session-file-store')(session);
 
 let room = require('./routes/room');
 let chat = require('./routes/chat');
@@ -19,7 +20,21 @@ mongoose.connect('mongodb://localhost:27017/mevn-chat', { useNewUrlParser: true,
   .then(() =>  console.log('connection succesful'))
   .catch((err) => console.error(err));
 
-app.use(cors())
+
+app.use(cors({
+  origin:['http://localhost:8080'],//frontend server localhost:8080
+  methods:['GET','POST','PUT','DELETE'],
+  credentials: true // enable set cookie
+}))
+
+app.use(session({
+  secret: 'JollynakAjollynakAjollynakApamPam',
+  resave: false,
+  store: new FileStore,
+  saveUninitialized: false,
+  name: 'test'
+}));
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({'extended':'false'}));
@@ -37,6 +52,11 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
+
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, DELETE');
+  res.header("Access-Control-Allow-Origin", 'http://localhost:8080');
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-   Type, Accept, Authorization");
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

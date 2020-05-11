@@ -12,7 +12,8 @@
                   :label-cols="4"
                   breakpoint="md"
                   label="Enter Room Name">
-          <b-form-input id="room_name" :state="state" v-model.trim="room.room_name"></b-form-input>
+          <b-form-input id="room_name" v-model.trim="room.room_name"></b-form-input>
+          <b-form-input id="room_type" v-model.trim="room.room_anonymous"></b-form-input>
         </b-form-group>
         <b-button type="submit" variant="primary">Add</b-button>
       </b-form>
@@ -24,6 +25,7 @@
 <script>
 
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 
 export default {
   name: 'AddRoom',
@@ -35,7 +37,9 @@ export default {
   methods: {
     onSubmit (evt) {
       evt.preventDefault()
-      axios.post(`http://localhost:3000/api/room`, this.room)
+      axios.post(`http://localhost:3000/api/room`, {
+        room_info: this.room
+      })
       .then(response => {
         this.$router.push({
           name: 'RoomList'

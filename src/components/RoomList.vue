@@ -1,6 +1,9 @@
 <template>
   <b-row>
     <b-col cols="12">
+      <button v-if="logged_in" class="form__submit" @click.stop="logout()">
+        Logout
+      </button>
       <div class="login form" v-if="registered">
 
         <div class="form__row">
@@ -63,6 +66,7 @@
 <script>
 
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 
 export default {
   name: 'RoomList',
@@ -103,13 +107,25 @@ export default {
 
     login () {
 
-      axios.post("http://localhost:3000/api/auth", {
+      axios.post("http://localhost:3000/api/auth/login", {
         auth_data: this.log_data
       })
         .then((response) => {
           this.logged_in = 1
           console.log(response);
           console.log('logged in!');
+        })
+        .catch((errors) => {
+          console.log(errors);
+          console.log("Cannot log in")
+        })
+    },
+
+    logout () {
+      axios.post("http://localhost:3000/api/auth/logout", {})
+        .then((response) => {
+          this.logged_in = 0;
+          console.log('logged out');
         })
         .catch((errors) => {
           console.log(errors);
