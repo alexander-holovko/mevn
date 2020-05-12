@@ -7,12 +7,15 @@ var loadUser = require('../helpers/loadUser.js');
 /* GET ALL ROOMS */
 router.get('/', function(req, res, next) {
 
-  console.log(req.session.id);
-  console.log(req.session);
+  Room.find(function (err, items) {
 
-  Room.find(function (err, products) {
     if (err) return next(err);
-    res.json(products);
+
+    let sess = req.session;
+    // let rooms = Object.assign({}, items);
+
+    res.json({rooms: items, sess: sess})
+
   });
 });
 
@@ -27,8 +30,9 @@ router.get('/:id', function(req, res, next) {
 
 /* SAVE ROOM */
 router.post('/', function(req, res, next) {
-  console.log(req.body);
   Room.create(req.body.room_info, function (err, post) {
+
+    console.log(post);
     if (err) return next(err);
     res.json(post);
   });

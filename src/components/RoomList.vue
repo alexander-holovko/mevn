@@ -47,7 +47,7 @@
       </div>
       <h2>
         Room List
-        <b-link href="#/add-room">(Add Room)</b-link>
+        <b-link href="#/add-room" v-if="logged_in">(Add Room)</b-link>
       </h2>
       <b-table striped hover :items="rooms" :fields="fields">
         <template slot="actions" scope="row">
@@ -83,6 +83,7 @@ export default {
       registered: 1,
       logged_in: 0,
       rooms: [],
+      all_rooms: [],
       errors: []
     }
   },
@@ -90,7 +91,17 @@ export default {
   created () {
     axios.get(`http://localhost:3000/api/room`)
     .then(response => {
-      this.rooms = response.data
+      this.logged_in = typeof response.data.sess.user_id !== 'undefined';
+      this.all_rooms = response.data.rooms;
+
+      if(this.logged_in) {
+        this.rooms = response.data.rooms
+      }
+      else {
+        this.rooms = response.data.rooms.filter(function (el) {
+          return !el.room_anonymous;
+        })
+      }
     })
     .catch(e => {
       this.errors.push(e)
@@ -111,9 +122,10 @@ export default {
         auth_data: this.log_data
       })
         .then((response) => {
+
           this.logged_in = 1
-          console.log(response);
-          console.log('logged in!');
+          this.checkRooms();
+
         })
         .catch((errors) => {
           console.log(errors);
@@ -124,8 +136,10 @@ export default {
     logout () {
       axios.post("http://localhost:3000/api/auth/logout", {})
         .then((response) => {
+
           this.logged_in = 0;
-          console.log('logged out');
+          this.checkRooms();
+
         })
         .catch((errors) => {
           console.log(errors);
@@ -134,7 +148,6 @@ export default {
     },
 
     createUser () {
-      console.log('create_user');
 
       axios.post(`http://localhost:3000/api/user`, this.reg_data)
         .then(response => {
@@ -147,6 +160,20 @@ export default {
         .catch(e => {
           this.errors.push(e)
         })
+    },
+
+    checkRooms() {
+      if(!this.logged_in) {
+        this.rooms = this.all_rooms.filter(function (el) {
+          return !el.room_anonymous;
+        })
+      }
+      else {
+        this.rooms = this.all_rooms
+      }
+
+      console.log(this.all_rooms);
+      console.log(this.rooms);
     }
   }
 }

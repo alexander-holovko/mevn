@@ -7,7 +7,6 @@ var Users = require('../models/Users.js');
 router.post('/:action', function(req, res, next) {
 
   if(req.params.action === 'login') {
-    console.log('login')
     Users.find({ name: req.body.auth_data.log_name, pass: req.body.auth_data.log_pass}, function (err, docs) {
       if(docs.length > 0) {
         req.session.user_id = docs[0]._id;
@@ -16,15 +15,13 @@ router.post('/:action', function(req, res, next) {
             user_id: docs[0]._id,
           });
         });
-        console.log(req.session)
-        console.log(req.session.id)
       }
     });
   }
 
   if(req.params.action === 'logout') {
-    console.log('logout');
     req.session.destroy();
+    res.json('session destroyed');
   }
 
 });
