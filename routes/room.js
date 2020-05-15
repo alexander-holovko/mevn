@@ -10,9 +10,7 @@ router.get('/', function(req, res, next) {
   Room.find(function (err, items) {
 
     if (err) return next(err);
-
     let sess = req.session;
-    // let rooms = Object.assign({}, items);
 
     res.json({rooms: items, sess: sess})
 

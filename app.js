@@ -12,6 +12,7 @@ let room = require('./routes/room');
 let chat = require('./routes/chat');
 let user = require('./routes/user');
 let auth = require('./routes/auth');
+let admin = require('./routes/admin');
 let app = express();
 
 let mongoose = require('mongoose');
@@ -44,6 +45,7 @@ app.use('/api/room', room);
 app.use('/api/chat', chat);
 app.use('/api/user', user);
 app.use('/api/auth', auth);
+app.use('/api/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

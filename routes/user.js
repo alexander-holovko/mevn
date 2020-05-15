@@ -11,4 +11,19 @@ router.post('/', function(req, res, next) {
   });
 });
 
+/* SAVE USER */
+router.post('/:action', function(req, res, next) {
+  if(req.params.action === 'promote') {
+    Users
+  }
+
+  if(req.params.action === 'ban') {
+
+  }
+
+  if(req.params.action === 'delete') {
+
+  }
+});
+
 module.exports = router;

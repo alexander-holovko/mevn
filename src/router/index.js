@@ -4,6 +4,7 @@ import RoomList from '@/components/RoomList'
 import AddRoom from '@/components/AddRoom'
 import JoinRoom from '@/components/JoinRoom'
 import ChatRoom from '@/components/ChatRoom'
+import Admin from '@/components/admin/Admin'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/chat-room/:id/:nickname',
       name: 'ChatRoom',
       component: ChatRoom
+    },
+    {
+      path: '/admin',
+      name: 'Admin',
+      component: Admin
     }
   ]
 })
