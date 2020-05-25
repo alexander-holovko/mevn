@@ -183,4 +183,29 @@ export default {
   input {
     display: block;
   }
+
+  .form {
+    max-width: 300px;
+    margin: 40px auto;
+    background-color: #ffffff;
+    border: 1px solid #dadada;
+    padding: 30px;
+
+    > span {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+
+    &__row {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    &__submit {
+      cursor: pointer;
+    }
+  }
 </style>

@@ -22,7 +22,8 @@
             <span v-if="user.expert">Експерт</span>
             <span v-else>Користувач</span>
           </div>
-          <button class="user__promote" @click="promoteUser(user.name)">Зробити експертом</button>
+          <button class="user__promote" v-if="!user.expert" @click="promoteUser(user._id)">Зробити експертом</button>
+          <button class="user__promote" @click="unPromoteUser(user._id)" v-else>Зробити користувачем</button>
         </li>
       </ul>
     </div>
@@ -38,7 +39,7 @@
 
       return {
         data: {},
-        users: [],
+        users: {},
       }
     },
 
@@ -59,8 +60,48 @@
 
       },
 
-      promoteUser() {
+      promoteUser(id) {
+        axios.post("http://localhost:3000/api/user/promote", {
+          id: id
+        })
+          .then((response) => {
 
+            for(let index in this.users) {
+
+              let user = this.users[index];
+
+              if(user._id === response.data._id) {
+                user.expert = true;
+              }
+            }
+
+            console.log(response);
+          })
+          .catch((errors) => {
+            console.log(errors);
+          })
+      },
+
+      unPromoteUser(id) {
+        axios.post("http://localhost:3000/api/user/unPromote", {
+          id: id
+        })
+          .then((response) => {
+
+            for(let index in this.users) {
+
+              let user = this.users[index];
+
+              if(user._id === response.data._id) {
+                user.expert = false;
+              }
+            }
+
+            console.log(response);
+          })
+          .catch((errors) => {
+            console.log(errors);
+          })
       }
     }
   }

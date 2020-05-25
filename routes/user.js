@@ -11,14 +11,18 @@ router.post('/', function(req, res, next) {
   });
 });
 
-/* SAVE USER */
+/* Promote USER */
 router.post('/:action', function(req, res, next) {
   if(req.params.action === 'promote') {
-    Users
+    Users.findByIdAndUpdate(req.body.id, {expert: true}, function (err, post) {
+      res.json(post);
+    })
   }
 
-  if(req.params.action === 'ban') {
-
+  if(req.params.action === 'unPromote') {
+    Users.findByIdAndUpdate(req.body.id, {expert: false}, function (err, post) {
+      res.json(post);
+    })
   }
 
   if(req.params.action === 'delete') {
